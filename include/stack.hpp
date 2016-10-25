@@ -23,7 +23,10 @@ template <typename T>
 stack<T>::stack() : array_(nullptr), array_size_(0), count_(0){};
 
 template <typename T>
-stack<T>::stack(const stack& x) : array_size_(x.array_size_), count_(x.count_), array_ (copy_mas(x.array_, x.count_, x.array_size_)){};
+stack<T>::stack(const stack& x) : array_size_(x.array_size_), count_(x.count_)
+{
+	array_ =std::copy(x.array_, x.count_, x.array_size_);
+};
 
 template <typename T>
 stack<T>::~stack() 
@@ -41,7 +44,7 @@ template<typename T>
 void stack<T>::push(T const &item) {
 	if (count_ == array_size_) {
 		count_++;
-		size_t size = array_size_ * 2 + (aray_size == 0);
+		size_t size = array_size_ * 2 + (array_size == 0);
 		T * buff = new T[size];
 		for (int i = 0; i < count_; i++) {
 			buff[i] = array_[i];
@@ -71,4 +74,10 @@ T stack<T>::pop()
         throw_is_empty();
     }
     return array_[count_--];
+}
+
+template <typename T>
+auto stack<T>::throw_is_empty() -> void
+{
+    throw std::logic_error("stack is empty");
 }
