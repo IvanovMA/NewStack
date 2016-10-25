@@ -1,6 +1,6 @@
 #include <iostream>
 #include <stdexcept>
-
+#include <algorithm>
 template<typename T>
 class stack
 {
@@ -44,7 +44,7 @@ template<typename T>
 void stack<T>::push(T const &item) {
 	if (count_ == array_size_) {
 		count_++;
-		size_t size = array_size_ * 2 + (array_size == 0);
+		size_t size = array_size_ * 2 ;
 		T * buff = new T[size];
 		for (int i = 0; i < count_; i++) {
 			buff[i] = array_[i];
@@ -71,13 +71,7 @@ template <typename T>
 T stack<T>::pop()
 {
     if ( count_ == 0 ) {
-        throw_is_empty();
+        throw std::logic_error("stack is empty");
     }
     return array_[count_--];
-}
-
-template <typename T>
-auto stack<T>::throw_is_empty() -> void
-{
-    throw std::logic_error("stack is empty");
 }
