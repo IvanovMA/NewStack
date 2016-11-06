@@ -43,7 +43,7 @@ template<typename T>
 void stack<T>::push(T const &item) {
 	if (count_ == array_size_) {
 		count_++;
-		size_t size = array_size_ * 2 + (aray_size == 0);
+		size_t size = array_size_ * 2 + (array_size == 0);
 		T * buff = new T[size];
 		for (int i = 0; i < count_; i++) {
 			buff[i] = array_[i];
