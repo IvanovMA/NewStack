@@ -16,6 +16,7 @@ private:
     T * array_;
     size_t array_size_;
     size_t count_;
+	void swap(stack & right);
 };
 
 
@@ -57,13 +58,21 @@ void stack<T>::push(T const &item) {
 }
 
 template<typename T>
-stack<T>& stack<T>::operator=(const stack& b){
-	if (this != &b){
-		T *p = array_;
-		array_ = std::copy(b.array_, b.array_[count_], b.array_size_);
-		count_ = b.count_;
-		array_size_ = b.array_size_;
-        delete[] p;
+void stack<T>::swap(stack & right)
+{
+	array_size_ = right.array_size_;
+	count_ = right.count_;
+	T * buff = new T[array_size_];
+	std::swap(buff, array_);
+	std::swap(buff, right.array_);
+	std::swap(buff, array_);
+}
+
+template<typename T>
+stack& stack<T>::operator=(stack const & right)
+{
+	if (this != &right) {
+		(stack(right)).swap(*this);
 	}
 	return *this;
 }
