@@ -79,7 +79,7 @@ template<typename T>
 stack<T> & operator=(stack const & right)
 {
 	if (this != &right) {
-		(stack(right)).swap(*this);
+		right.swap(*this);
 	}
 	return *this;
 }
