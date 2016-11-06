@@ -12,7 +12,7 @@ public:
     size_t count() const;
     void push(T const&); 
     T pop();
-    stack& operator= (stack const & right);
+    stack & operator= (stack const & right);
 private:
     T * array_;
     size_t array_size_;
