@@ -12,7 +12,7 @@ public:
     size_t count() const;
     void push(T const&); 
     T pop();
-    stack<T> & operator=(stack const & right);
+    stack<T> & operator=(stack<T> const & right);
 private:
     T * array_;
     size_t array_size_;
@@ -76,10 +76,10 @@ void stack<T>::swap(stack & right)
 }
 
 template<typename T>
-stack<T> & operator=(stack const & right)
+stack<T> & operator=(stack<T> const & right)
 {
 	if (this != &right) {
-		(stack(right)).swap(*this);
+		(stack<T>(right)).swap(*this);
 	}
 	return *this;
 }
