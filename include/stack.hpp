@@ -28,8 +28,8 @@ template <typename T>
 stack<T>::stack(const stack& x) : array_size_(x.array_size_), count_(x.count_)
 {
 	array_size_ = x.array_size_;
-	T * buff = new T[x.array_size];
-	count_ = x.count;
+	T * buff = new T[x.array_size_];
+	count_ = x.count_;
 	for (int i = 0; i < count_; i++) 
 	{
 		buff[i] = array_[i];
@@ -76,7 +76,7 @@ void stack<T>::swap(stack & right)
 }
 
 template<typename T>
-stack& stack<T>::operator=(stack const & right)
+stack & stack<T>::operator=(stack const & right)
 {
 	if (this != &right) {
 		(stack(right)).swap(*this);
