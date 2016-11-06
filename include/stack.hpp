@@ -57,7 +57,7 @@ void stack<T>::push(T const &item) {
 template<typename T>
 T stack<T>::pop() {
 	if (count_ == 0) {
-		throw std::logic_error("Stack is empty!");
+		break;
 	}
 	return array_[--count_];
 }
