@@ -56,9 +56,7 @@ void stack<T>::push(T const &item) {
 }
 template<typename T>
 T stack<T>::pop() {
-	if (count_ == 0) {
-		break;
-	}
+	if (count_ !=0)
 	return array_[--count_];
 }
 template<typename T>
