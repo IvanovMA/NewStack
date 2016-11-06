@@ -1,102 +1,139 @@
 #include <iostream>
 
+template <typename T1, typename T2>
+void construct(T1 * ptr, T2 const & value) {
+    new(ptr) T1 (value);
+}
+
+template <typename T>
+void destroy(T * ptr) noexcept
+{
+    ptr->~T();
+}
+
+template <typename FwdIter>
+void destroy(FwdIter first, FwdIter last) noexcept
+{
+    for (; first != last; ++first) {
+        destroy(&*first);
+    }
+}
+
+template <typename T>
+class allocator
+{
+protected:
+    allocator(size_t size = 0);
+    ~allocator();
+    auto swap(allocator & other) -> void;
+    
+    allocator(allocator const &) = delete;
+    auto operator =(allocator const &) -> allocator & = delete;
+    
+    T * ptr_;
+    size_t size_;
+    size_t count_;
+};
+
+template <typename T>
+allocator<T>::allocator(size_t size) : ptr_((T*)(operator new(size*sizeof(T)))), size_(size), count_(0){}
+
+template<typename T>
+allocator<T>::~allocator(){ operator delete(ptr_); }
+
+template<typename T>
+auto allocator<T>::swap(allocator & other) -> void {
+	std::swap(ptr_, other.ptr_);
+	std::swap(count_, other.count_);
+	std::swap(size_, other.size_);
+}
+
 template <typename T> 
-class stack
+class stack : private allocator<T>
 {
 public: 
-	stack();                        /* noexcept */
+	stack(size_t size = 0);         /* noexcept */
 	stack(const stack&);            /* strong */
 	~stack();                       /* noexcept */
 	size_t count() const;           /* noexcept */
 	void push(T const &);           /* strong */
-	const T& top() const;          	/* strong */
+	const T& top() const;          		/* strong */	
 	void pop();                     /* strong */
-	stack& operator=(const stack&); /* strong */
-	bool empty() const;		/* noexcept */
-private:
-	T * array_;
-	size_t array_size_;
-	size_t count_;
+	auto operator=(stack const & right)->stack &; /* strong */
+	bool empty() const;					/* noexcept */
 }; 
 
-template<typename T>
-T* copy_mas(const T *p1, size_t c, size_t s)
-{
-	T *p2 = new T[s];
-	try
-	{ 
-		std::copy(p1, p1 + c, p2); 
-	}
-	catch (...)
-	{ 
-		delete[] p2; 
-		throw; 
-	}
-	return p2;
-}
+template <typename T>
+stack<T>::stack(size_t size) :allocator<T>(size){};
 
 template <typename T>
-stack<T>::stack() : array_(nullptr), array_size_(0), count_(0){};
-
-template <typename T>
-stack<T>::stack(const stack& x) : array_size_(x.array_size_), count_(x.count_), array_ (copy_mas(x.array_, x.count_, x.array_size_)){};
+stack<T>::stack(const stack& x) :allocator<T>(x.size_){
+	for (size_t i = 0; i < x.count_; i++) construct(allocator<T>::ptr_ + i, x.ptr_[i]);
+	allocator<T>::count_ = x.count_;
+};
 
 template <typename T>
 stack<T>::~stack() 
 {
-	delete[] array_;
 }
 
 template <typename T>
 size_t stack<T>::count()const 
 {
-	return count_;
+	return allocator<T>::count_;
 }
 
 template <typename T>
-void stack<T>::push(T const &a)
+void stack<T>::push(T const &item)
 {
-	if (count_ == array_size_)
-	{
-		size_t newarray_size_=array_size_*2 + (count_==0);
-		T *p = copy_mas(array_, count_,newarray_size_);
-		delete [] array_;
-		array_=p;
-		array_size_ =newarray_size_;
+	if (allocator<T>::count_ == allocator<T>::size_) {
+		size_t array_size = allocator<T>::size_ * 2 + (allocator<T>::size_ == 0);
+		stack<T> temp(array_size);
+		while (temp.count() < allocator<T>::count_) temp.push(allocator<T>::ptr_[temp.count()]); 
+		this->swap(temp);
 	}
-	array_[count_] = a;
-	++count_;
+	construct(allocator<T>::ptr_ + allocator<T>::count_, item);
+	++allocator<T>::count_;
 }
 
 template <typename T>
 const T& stack<T>::top() const
 {
-	if (count_ > 0) return array_[count_ -1];
-	else throw("Stack is empty");
+	if (allocator<T>::count_ == 0) {
+		throw ("Stack is empty!");
+	}
+	return allocator<T>::ptr_[allocator<T>::count_ - 1];
 }
 
 template <typename T>
 void stack<T>::pop()
 {
-	if (count_> 0) 
-		--count_;
-	else throw ("Stack is empty");
+	if (allocator<T>::count_ == 0) {
+		throw ("Stack is empty!");
+	} else {
+		allocator<T>::count_--;
+	}
 }
 
 template<typename T>
-stack<T>& stack<T>::operator=(const stack& b){
-	if (this != &b){
-		T *p = array_;
-		array_ = copy_mas(b.array_, b.count_, b.array_size_);
-		delete[] p;
-		count_ = b.count_;
-		array_size_ = b.array_size_;
+auto stack<T>::operator=(stack const & right) -> stack & 
+{
+	if (this != &right) {
+	stack<T> temp (right.size_);
+	while (temp.count_ < right.count_){
+		construct(temp.ptr_ + temp.count_, right.ptr_[temp.count_]);
+		++temp.count_;
+	}	
+	this -> swap(temp);
 	}
 	return *this;
 }
 
 template<typename T>
-bool stack<T>::empty() const
-{ 
-	return(count_ == 0); 
-} 
+bool stack<T>::empty() const{
+	if (allocator<T>::count_ == 0){
+		return true;
+	} else{
+		return false;
+	}
+}
