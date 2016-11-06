@@ -76,10 +76,10 @@ void stack<T>::swap(stack & right)
 }
 
 template<typename T>
-stack<T> & operator=(stack<T> const & right)
+stack<T> & operator=(stack const & right)
 {
 	if (this != &right) {
-		(stack<T>(right)).swap(*this);
+		(stack(right)).swap(*this);
 	}
 	return *this;
 }
