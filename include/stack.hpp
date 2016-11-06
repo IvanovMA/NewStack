@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <algorithm>
+
 template<typename T>
 class stack
 {
@@ -26,7 +27,13 @@ stack<T>::stack() : array_(nullptr), array_size_(0), count_(0){};
 template <typename T>
 stack<T>::stack(const stack& x) : array_size_(x.array_size_), count_(x.count_)
 {
-	array_ =std::copy(x.array_, x.array_[count_], x.array_size_);
+	array_size_ = x.array_size_;
+	T * buff = new T[x.array_size];
+	count_ = x.count;
+	for (int i = 0; i < count_; i++) 
+	{
+		buff[i] = array_[i];
+	}
 };
 
 template <typename T>
