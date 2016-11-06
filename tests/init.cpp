@@ -16,9 +16,3 @@ SCENARIO("pop", "[pop]"){
   REQUIRE(s.count()==0);
 }
 
-SCENARIO("cop", "[cop]"){
-   stack<int> s;
-   s.push(1);
-   stack<int> s2=s;
-   REQUIRE(s2.count()==1);
- }
