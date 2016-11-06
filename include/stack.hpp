@@ -9,9 +9,10 @@ public:
 	~stack();                       /* noexcept */
 	size_t count() const;           /* noexcept */
 	void push(T const &);           /* strong */
-	const T& top() const;          		/* strong */
+	const T& top() const;          	/* strong */
 	void pop();                     /* strong */
 	stack& operator=(const stack&); /* strong */
+	bool empty() const;		/* noexcept */
 private:
 	T * array_;
 	size_t array_size_;
@@ -93,3 +94,9 @@ stack<T>& stack<T>::operator=(const stack& b){
 	}
 	return *this;
 }
+
+template<typename T>
+bool stack<T>::empty() const
+{ 
+	return(count_ == 0); 
+} 
