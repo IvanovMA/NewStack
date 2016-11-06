@@ -1,58 +1,49 @@
+#include "stdafx.h"
+#include <stdlib.h>
 #include <iostream>
-#include <stdexcept>
-#include <algorithm>
-
-template<typename T>
+using namespace std;
+template <typename T>
 class stack
 {
 public:
-    stack(); 
-    ~stack(); 
-    stack(const stack&); 
-    size_t count() const;
-    void push(T const&); 
-    T pop();
-    stack<T> & operator=(stack<T> const & right);
+	stack();
+	~stack();
+	size_t count() const;
+	auto push(T const &) -> void;
+	T pop();
+	auto operator=(stack const & right)->stack &;
 private:
-    T * array_;
-    size_t array_size_;
-    size_t count_;
-	void swap(stack & right);
+	T * array_;
+	size_t array_size_;
+	size_t count_;
+	auto swap(stack & right) -> void;
 };
 
 
 template <typename T>
-stack<T>::stack() : array_(nullptr), array_size_(0), count_(0){};
-
-template <typename T>
-stack<T>::stack(const stack& x) : array_size_(x.array_size_), count_(x.count_)
+size_t stack<T>::count() const
 {
-	array_size_ = x.array_size_;
-	T * buff = new T[x.array_size_];
-	count_ = x.count_;
-	for (int i = 0; i < count_; i++) 
-	{
-		buff[i] = array_[i];
-	}
-};
-
+	return count_;
+}
 template <typename T>
-stack<T>::~stack() 
+stack<T>::stack()
 {
-	delete[] array_;
+	array_size_ = 0;
+	array_ = new T[array_size_];
+	count_ = 0;
 }
 
 template <typename T>
-size_t stack<T>::count() const 
+stack<T>::~stack()
 {
-	return count_;
+	delete[] array_;
 }
 
 template<typename T>
 void stack<T>::push(T const &item) {
 	if (count_ == array_size_) {
 		count_++;
-		size_t size = array_size_ * 2 ;
+		size_t size = array_size_ * 2 + (aray_size == 0);
 		T * buff = new T[size];
 		for (int i = 0; i < count_; i++) {
 			buff[i] = array_[i];
@@ -63,10 +54,15 @@ void stack<T>::push(T const &item) {
 		array_[count_ - 1] = item;
 	}
 }
-
 template<typename T>
-void stack<T>::swap(stack & right)
-{
+T stack<T>::pop() {
+	if (count_ == 0) {
+		throw std::logic_error("Stack is empty!");
+	}
+	return array_[--count_];
+}
+template<typename T>
+auto stack<T>::swap(stack & right) -> void {
 	array_size_ = right.array_size_;
 	count_ = right.count_;
 	T * buff = new T[array_size_];
@@ -76,18 +72,10 @@ void stack<T>::swap(stack & right)
 }
 
 template<typename T>
-stack<T> & operator=(stack const & right)
-{
+auto stack<T>::operator=(stack const & right) -> stack & {
 	if (this != &right) {
-		right.swap(*this);
+		(stack(right)).swap(*this);
 	}
 	return *this;
 }
-template <typename T>
-T stack<T>::pop()
-{
-    if ( count_ == 0 ) {
-        throw std::logic_error("stack is empty");
-    }
-    return array_[count_--];
-}
+
