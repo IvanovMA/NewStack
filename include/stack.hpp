@@ -12,7 +12,7 @@ public:
     size_t count() const;
     void push(T const&); 
     T pop();
-    auto operator=(stack const & right)->stack &;
+    T& operator=(stack const & right);
 private:
     T * array_;
     size_t array_size_;
@@ -76,7 +76,7 @@ void stack<T>::swap(stack & right)
 }
 
 template<typename T>
-auto operator=(stack const & right)->stack &
+T& operator=(stack const & right)
 {
 	if (this != &right) {
 		(stack(right)).swap(*this);
