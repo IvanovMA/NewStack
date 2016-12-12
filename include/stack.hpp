@@ -206,6 +206,8 @@ template<typename T>
 auto allocator<T>::swap(allocator & other) -> void {
 	std::swap(ptr_, other.ptr_);
 	std::swap(size_, other.size_);
+	std::swap(map_, other.map_);
+	std::swap(map_, other.map_);
 }
 
 template <typename T>
