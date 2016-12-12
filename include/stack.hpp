@@ -149,7 +149,7 @@ auto allocator<T>::construct(T * ptr, T const & value)->void {
 	if (ptr >= ptr_&&ptr < ptr_ + size_&&map_->test(ptr - ptr_)) {
 		new(ptr)T(value);
 		map_->set(ptr - ptr_);
-		++counter_;
+		++bitset<T>::counter_;
 	}
 	else throw("error");
 }
@@ -160,7 +160,7 @@ auto allocator<T>::destroy(T * ptr) -> void {
 	if (!map_->test(ptr-ptr_)){
 	ptr->~T();
 	map_->reset(ptr-ptr_);
-		--counter_;
+		--bitset<T>::counter_;
 	}
 }
 	else throw("error");
