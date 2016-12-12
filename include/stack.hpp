@@ -143,7 +143,7 @@ auto allocator<T>::resize() -> void
 	allocator<T> buff(size_ * 2 + (size_ == 0));
 	for (size_t i = 0; i < size_; ++i) construct(buff.ptr_ + i, ptr_[i]);
 	this->swap(buff);
-	std::swap(map_,buff.map_);
+	std::swap(map_, buff.map_);
 }
 
 template<typename T>
