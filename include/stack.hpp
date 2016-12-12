@@ -113,6 +113,7 @@ public:
 	auto pop() /*strong*/ -> void;
 	auto top() /*strong*/ -> T &;
 	auto top() const /*strong*/ -> T const &;
+	auto operator=(stack const & T) -> stack & 
 
 private:
 	allocator<T> allocator_;
@@ -264,4 +265,17 @@ auto stack<T>::empty() const -> bool {
 	return allocator_.empty(); 
 }
 
+template<typename T>
+auto stack<T>::operator=(stack const & right) -> stack & 
+{
+	if (this != &right) {
+	stack<T> temp (right.size_);
+	while (temp.count_ < right.count_){
+		construct(temp.ptr_ + temp.count_, right.ptr_[temp.count_]);
+		++temp.count_;
+	}	
+	this -> swap(temp);
+	}
+	return *this;
+}
 #endif
