@@ -88,9 +88,10 @@ public:
 	auto count() const /*noexcept*/ -> size_t;
 	auto full() const /*noexcept*/ -> bool;
 	auto empty() const /*noexcept*/ -> bool;
+	auto swap(allocator & other) /*noexcept*/ -> void;
 private:
 	auto destroy(T * first, T * last) /*noexcept*/ -> void;
-	auto swap(allocator & other) /*noexcept*/ -> void;
+	
 
 
 	T * ptr_;
