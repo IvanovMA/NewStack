@@ -152,11 +152,11 @@ auto allocator<T>::resize() -> void
 
 template<typename T>
 auto allocator<T>::construct(T * ptr, T const & value)->void {
-	if (ptr >= ptr_&&ptr < ptr_ + size_&&map_->test(ptr - ptr_)) {
-		new(ptr)T(value);
-		map_->set(ptr - ptr_);
+	if (ptr < ptr_ || ptr >= ptr_ + size_) {
+		throw std::out_of_range("Error");
 	}
-	else throw("error");
+	new(ptr) T(value);
+	map_->set(ptr - ptr_);
 }
 
 template<typename T>
