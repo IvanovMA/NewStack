@@ -113,7 +113,6 @@ public:
 	auto pop() /*strong*/ -> void;
 	auto top() /*strong*/ -> T &;
 	auto top() const /*strong*/ -> T const &;
-	auto operator=(stack const & T) -> stack & 
 
 private:
 	allocator<T> allocator_;
