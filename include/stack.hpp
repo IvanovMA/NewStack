@@ -134,7 +134,6 @@ template<typename T>
 
 template<typename T>
 allocator<T>::~allocator() {
-	destroy(ptr_, ptr_+size_);
 	operator delete(ptr_); 
 }
 
@@ -160,20 +159,21 @@ auto allocator<T>::construct(T * ptr, T const & value)->void {
 }
 
 template<typename T>
-auto allocator<T>::destroy(T * ptr) -> void {
-	if(ptr>=ptr_&&ptr<=ptr_+this->size_){
-	if (!map_->test(ptr-ptr_)){
-	ptr->~T();
-	map_->reset(ptr-ptr_);
+auto allocator<T>::destroy(T * ptr) -> void 
+{
+	if (ptr < ptr_ || ptr >= ptr_ + size_) {
+		throw std::out_of_range("Error");
 	}
-}
-	else throw("error");
+
+
+	ptr->~T();
+	map_->reset(ptr - ptr_);
 }
 
 
 template<typename T>
 auto allocator<T>::destroy(T * first, T * last) -> void
-{	if(first>=ptr_&&last<=ptr_+this->size_)
+{	
 	for (; first != last; ++first) {
 		destroy(&*first);
 	}
