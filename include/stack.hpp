@@ -192,7 +192,7 @@ auto allocator<T>::refact()->void
 
 template<typename T>
 auto allocator<T>::resize()-> void {
-	allocator.refact();
+	allocator<T>::refact();
 	size_t size = size_ * 2 + (size_ == 0);
 	allocator<T> buff(size);
 	for (size_t i = 0; i < size_; ++i) {
