@@ -183,7 +183,7 @@ template<typename T>
 auto allocator<T>::refact()->void
 {
 	allocator<T> buff(size_);
-	for (site_t i=0;i<size_; i++)
+	for (size_t i=0;i<size_; i++)
 	{
 		if(allocator.ptr_ != nullptr) buff.construct(buff.ptr_ + i, ptr_[i]);
 	}
