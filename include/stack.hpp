@@ -185,7 +185,7 @@ auto allocator<T>::refact()->void
 	allocator<T> buff(size_);
 	for (size_t i=0;i<size_; i++)
 	{
-		if(allocator.ptr_ != nullptr) buff.construct(buff.ptr_ + i, ptr_[i]);
+		if(ptr_ != nullptr) buff.construct(buff.ptr_ + i, ptr_[i]);
 	}
 	this->swap(buff);
 }
