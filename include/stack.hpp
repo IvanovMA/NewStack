@@ -186,7 +186,7 @@ auto allocator<T>::refact()->void
 	size_t j=0;
 	for (size_t i=0;i<size_; i++)
 	{
-		if(ptr_ != nullptr) 
+		if(bitset<T>::ptr_) 
 		{
 			buff.construct(buff.ptr_ + j, ptr_[i]);
 			++j;
