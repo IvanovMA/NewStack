@@ -183,9 +183,14 @@ template<typename T>
 auto allocator<T>::refact()->void
 {
 	allocator<T> buff(size_);
+	size_t j=0;
 	for (size_t i=0;i<size_; i++)
 	{
-		if(ptr_ != nullptr) buff.construct(buff.ptr_ + i, ptr_[i]);
+		if(ptr_ != nullptr) 
+		{
+			buff.construct(buff.ptr_ + j, ptr_[i]);
+			++j;
+		}
 	}
 	this->swap(buff);
 }
