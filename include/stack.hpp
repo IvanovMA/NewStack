@@ -110,7 +110,7 @@ public:
 	auto full() const /*noexcept*/ -> bool;
 	auto empty() const /*noexcept*/ -> bool;
 	auto swap(allocator & other) /*noexcept*/ -> void;
-	auto allocator<T>::refact()->void;
+	auto refact()->void;
 private:
 	auto destroy(T * first, T * last) /*noexcept*/ -> void;
 	
