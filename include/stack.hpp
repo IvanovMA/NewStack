@@ -110,6 +110,7 @@ public:
 	auto full() const /*noexcept*/ -> bool;
 	auto empty() const /*noexcept*/ -> bool;
 	auto swap(allocator & other) /*noexcept*/ -> void;
+	auto allocator<T>::refact()->void;
 private:
 	auto destroy(T * first, T * last) /*noexcept*/ -> void;
 	
@@ -179,7 +180,19 @@ auto allocator<T>::destroy(T * first, T * last)->void
 }
 
 template<typename T>
+auto allocator<T>::refact()->void
+{
+	allocator<T> buff(size_);
+	for (site_t i=0;i<size_; i++)
+	{
+		if(allocator.ptr_ != nullptr) buff.construct(buff.ptr_ + i, ptr_[i]);
+	}
+	this->swap(buff);
+}
+
+template<typename T>
 auto allocator<T>::resize()-> void {
+	allocator.refact();
 	size_t size = size_ * 2 + (size_ == 0);
 	allocator<T> buff(size);
 	for (size_t i = 0; i < size_; ++i) {
