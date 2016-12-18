@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5.2)
-project($stack CXX)
+project(${PROJECT_NAME} CXX)
 
 file(GLOB SOURCES *.cpp)
 add_executable(${PROJECT_NAME} ${SOURCES})
